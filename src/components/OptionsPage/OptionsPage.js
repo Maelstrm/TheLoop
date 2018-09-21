@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Nav from '../../components/Nav/Nav';
+import Nav from '../Nav/Nav';
+import Footer from '../Footer/Footer';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => ({
   user: state.user,
 });
 
-class InfoPage extends Component {
+class OptionsPage extends Component {
   componentDidMount() {
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
   }
@@ -26,7 +27,7 @@ class InfoPage extends Component {
       content = (
         <div>
           <p>
-            Info Page
+            Options Page
           </p>
         </div>
       );
@@ -36,10 +37,11 @@ class InfoPage extends Component {
       <div>
         <Nav />
         { content }
+        <Footer />
       </div>
     );
   }
 }
 
 // this allows us to use <App /> in index.js
-export default connect(mapStateToProps)(InfoPage);
+export default connect(mapStateToProps)(OptionsPage);

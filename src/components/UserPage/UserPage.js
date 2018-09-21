@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Nav from '../../components/Nav/Nav';
+import Footer from '../../components/Footer/Footer';
+
 
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
@@ -35,9 +37,10 @@ class UserPage extends Component {
           <h1
             id="welcome"
           >
-            Welcome, { this.props.user.userName }!
+            Welcome, {this.props.user.userName}!
           </h1>
           <p>Your ID is: {this.props.user.id}</p>
+          {JSON.stringify(this.props.user.fullUser)}
           <button
             onClick={this.logout}
           >
@@ -51,6 +54,7 @@ class UserPage extends Component {
       <div>
         <Nav />
         { content }
+        <Footer />
       </div>
     );
   }
