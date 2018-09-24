@@ -49,4 +49,34 @@ router.get('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+router.get('/getMyFriends', (req, res) => {
+    console.log('getAllRouter');
+    
+    //make sure user is logged in to view shelf
+    if(req.isAuthenticated()) {
+        // "item".* gets all from item table
+        // and the query only grabs username from person table
+        const myFriends = `SELECT person.username, person.first_name, person.last_name, person.email
+        FROM "friendship" 
+        JOIN "person" ON "friendship"."friendA_id" = "person"."id"
+        WHERE "friendB_id" = $1
+        UNION
+        SELECT person.username, person.first_name, person.last_name, person.email
+        FROM "friendship" 
+        JOIN "person" ON "friendship"."friendB_id" = "person"."id"
+        WHERE "friendA_id" = $1;
+        `;
+        pool.query(myFriends, [req.user.id]).then((results) => {
+            console.log(results.rows);
+            res.send(results.rows);
+        }).catch((error) => {
+            console.log('error in getAll recom.route', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+})
+
 module.exports = router;
