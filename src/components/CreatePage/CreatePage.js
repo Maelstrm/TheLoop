@@ -4,11 +4,6 @@ import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
-
-import { USER_ACTIONS } from '../../redux/actions/userActions';
-
-
-
 class CreatePage extends Component {
 
 
