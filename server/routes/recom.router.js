@@ -10,7 +10,7 @@ router.get('/getAll', (req, res) => {
     
     //make sure user is logged in to view shelf
     if(req.isAuthenticated()) {
-        // "item".* gets all from item table   
+        // "item".* gets all from item table
         // and the query only grabs username from person table
         const getAll = `SELECT written_from, person.username, person.email, person.phone_number, fill_referral.date_created, fill_referral.referral_body, fill_referral.aws_links, fill_referral.can_contact, fill_referral.favorite,  person.employer, person.position
         FROM "new_request"

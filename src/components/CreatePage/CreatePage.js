@@ -6,6 +6,11 @@ import Footer from '../Footer/Footer';
 import FriendCard from '../FriendCard/FriendCard';
 
 import Axios from 'axios';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
 class CreatePage extends Component {
 
@@ -13,19 +18,26 @@ class CreatePage extends Component {
     super();
 
     this.state = {
-      sendTo: '',
+      emailToTry: '',
       myFriends: [],
 
       //Controlls which view is being rendered
-      // i.e. select, compose, 
+      // i.e. select, compose
       currentView: 'select',
-      referral_body: '',
+      request_body: '',
       suggested_words: '',
       currentDate: '',
     }
   }
 
+  componentDidUpdate() {
+    if (!this.props.user.isLoading && this.props.user.userName === null) {
+      this.props.history.replace('home');
+    }
+  }
+
   // Initial axios request for generating list of current friends
+  // Sets to local state
   getMyFriends = () => {
     Axios({
       method: 'get',
@@ -34,18 +46,54 @@ class CreatePage extends Component {
       this.setState({
         myFriends: response.data,
       });
-      console.log('in getMyFriends Working', this.state.myFdriends);
     }).catch((error) => {
       console.log('error in getMyFriends', error);
     })
   }
 
-getDate = () => {
-  let todayDate = String(new Date());
-  this.setState({
-    currentDate: todayDate
-  })
-}
+  // Sends axios request to put data into server
+  attemptRequest = () => {
+    let requestToAttempt = {
+      date_sent: this.state.currentDate,
+      emailToTry: this.state.emailToTry,
+      request_body: this.state.request_body,
+      suggested_words: this.state.suggested_words
+    }
+
+    Axios({
+      method: 'post',
+      url: '/api/create/checkEmail/' + requestToAttempt.emailToTry
+    }).then((response) => {
+      // If the email is found ,then the next function to send to DB will be sent.
+      // If not, then alert will appear
+      // In the future, another function will run instead, for unregistered reciever
+      switch (response.data) {
+        case 'foundData':
+          console.log('Will call next function');
+          break;
+
+        case 'dataNotFound':
+          console.log('Data Not found');
+          alert('Sorry, this person is not in the database');
+
+        default:
+          console.log('Something Weird Happened!!');
+
+          break;
+      }
+    }).catch((error) => {
+      console.log('error in attemptRequest');
+    })
+    // this.props.history.push('index');
+  }
+
+  // Sets the date of the request, based on the user's client
+  getDate = () => {
+    let todayDate = String(new Date());
+    this.setState({
+      currentDate: todayDate
+    })
+  }
 
   // Stuff to run when page is initially rendered
   componentDidMount() {
@@ -53,34 +101,29 @@ getDate = () => {
     this.getDate();
   }
 
-  // Handles the state for the 'sendTo' state
-  handleSendToState = (event) => {
+  // Handles the state for the 'emailToTry' state
+  handleemailToTryState = (event) => {
     this.setState({
-      sendTo: event.target.value,
+      emailToTry: event.target.value,
     })
   }
-   // Handles the state for the 'referral_body' state
-   handleReferralBodyState = (event) => {
+  // Handles the state for the 'request_body' state
+  handleReferralBodyState = (event) => {
     this.setState({
-      referral_body: event.target.value,
+      request_body: event.target.value,
     })
   }
 
-   // Handles the state for the 'suggested_words' state
-   handleSuggestedWordsState = (event) => {
+  // Handles the state for the 'suggested_words' state
+  handleSuggestedWordsState = (event) => {
     this.setState({
       suggested_words: event.target.value,
     })
   }
 
-  // Sends axios request to put data into server
-  sendRequest = () => {
-    this.props.history.push('index');
-  }
-
   // handles the display view for the create request form
   displayViewChange = () => {
-    if(this.state.sendTo === '') {
+    if (this.state.emailToTry === '') {
       return alert('must input email')
     }
     else {
@@ -107,14 +150,14 @@ getDate = () => {
           <div>
             <Nav />
             <label>Email Address</label>
-            <input type="text" name="userToSend" placeholder="username@address.com" onChange={this.handleSendToState} value={this.state.sendTo}></input>
+            <input type="text" name="userToSend" placeholder="username@address.com" onChange={this.handleemailToTryState} value={this.state.emailToTry}></input>
             <button onClick={this.displayViewChange}>Next</button>
 
             {/* Render a card for every friend */}
             {this.state.myFriends.map((item, i) => {
               this.setMe = () => {
                 this.setState({
-                  sendTo: item.email
+                  emailToTry: item.email
                 })
               }
               return (<div key={i} onClick={this.setMe}><FriendCard key={i} data={item} /></div>)
@@ -126,14 +169,14 @@ getDate = () => {
         return (
           <div>
             <Nav />
-            {this.state.sendTo}
-            <input type="text" name="request_body" placeholder="Referral Body" onChange={this.handleReferralBodyState} value={this.state.referral_body}></input>
+            {this.state.emailToTry}
+            <input type="text" name="request_body" placeholder="Referral Body" onChange={this.handleReferralBodyState} value={this.state.request_body}></input>
             <input type="text" name="suggested_words" placeholder="Suggested Words" onChange={this.handleSuggestedWordsState} value={this.state.suggested_words}></input>
             {this.state.currentDate}
             {this.state.suggested_words}
-            {this.state.referral_body}
+            {this.state.request_body}
             <button onClick={this.displayViewChange}>Back</button>
-            <button onClick={this.sendRequest}>Send</button>
+            <button onClick={this.attemptRequest}>Send</button>
             <Footer />
           </div>
         )
@@ -152,5 +195,5 @@ getDate = () => {
 }
 
 // this allows us to use <App /> in index.js
-export default connect()(CreatePage);
+export default connect(mapStateToProps)(CreatePage);
 
