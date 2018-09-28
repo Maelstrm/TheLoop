@@ -61,7 +61,7 @@ class FillRequestsPage extends Component {
       <div>
         <Nav />
         {this.state.requestsToFill.map((item, i) => {
-          return <RequestCard key={i} data={item} funct={this.refresh} />
+          return <RequestCard key={i} data={item} funct={this.refresh} refresh={this.getToFill}/>
         })}
         <Footer />
       </div>

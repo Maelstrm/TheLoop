@@ -7,16 +7,16 @@ import Axios from 'axios';
 
 class RequestCardFill extends Component {
 
-constructor() {
-  super();
-  this.state = {
-        referral_body: '',
-        aws_links: '',
-        can_contact: true,
+  constructor() {
+    super();
+    this.state = {
+      referral_body: '',
+      aws_links: '',
+      can_contact: true,
+    }
   }
-}
 
-//   Shuffles the mode of the request card.
+  //   Shuffles the mode of the request card.
   deleteMe = () => {
     this.props.delete();
   }
@@ -28,43 +28,58 @@ constructor() {
   }
 
   addNew = () => {
-      console.log('in addNew', this.props.data);
-      const newRef = {
-        new_request_id: this.props.data.request_id,
-        referral_body: '',
-        date_created: this.dateToYMD(new Date()),
-        aws_links: this.state.aws_links,
-        can_contact: this.state.can_contact,
-      }
-      this.sendRef(newRef)
+    console.log('in addNew', this.props.data);
+    const newRef = {
+      new_request_id: this.props.data.request_id,
+      referral_body: '',
+      date_created: this.dateToYMD(new Date()),
+      aws_links: this.state.aws_links,
+      can_contact: this.state.can_contact,
+    }
+    this.sendRef(newRef)
   }
 
-//   Formats date so that it is compatible with postgreSQL
+  //   Formats date so that it is compatible with postgreSQL
   dateToYMD(date) {
     var d = date.getDate();
     var m = date.getMonth() + 1;
     var y = date.getFullYear();
-    return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-}
+    return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+  }
 
   sendRef = (toSend) => {
     console.log(toSend, 'from sendRef');
-    
+
     Axios({
-        method: 'post',
-        url: '/api/recom/addNew/',
-        data: toSend,
+      method: 'post',
+      url: '/api/recom/addNew/',
+      data: toSend,
     }).then((response) => {
-        console.log('sendRef worked!');
+      console.log('sendRef worked!');
+      this.completeRequest();
     }).catch((error) => {
-        console.log('error in sendRef');
+      console.log('error in sendRef');
     })
   }
 
-changeContact = () => {
-      this.setState({
-        can_contact: !this.state.can_contact,
-      })
+  completeRequest = () => {
+    console.log(this.props.data.request_id, 'from completeRequest');
+
+    Axios({
+      method: 'put',
+      url: '/api/recom/completeRequest/' + this.props.data.request_id,
+    }).then((response) => {
+      this.props.dest();
+    }).catch((error) => {
+      console.log('error in completeRequest');
+    })
+  }
+
+
+  changeContact = () => {
+    this.setState({
+      can_contact: !this.state.can_contact,
+    })
   }
 
   contactButtonDisplay = () => {
@@ -81,7 +96,7 @@ changeContact = () => {
   render() {
 
     return (
-        <div>
+      <div>
         {this.props.data.first_name} {this.props.data.last_name}
         <br />
         {this.props.data.email}

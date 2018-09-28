@@ -43,7 +43,8 @@ router.get('/getToFill', (req, res) => {
         const getToFill = `SELECT *
         FROM "new_request"
         JOIN "person" ON "new_request"."owned_by" = "person"."id" 
-        WHERE "written_from" = $1;`;
+        WHERE "written_from" = $1
+        AND "completed" = FALSE`;
         pool.query(getToFill, [req.user.id]).then((results) => {
             console.log('toFill Worked :', results.rows);
             res.send(results.rows);
@@ -99,5 +100,23 @@ else {
 }
 
 });
+
+router.put('/completeRequest/:id', (req, res) => {
+    console.log('touchdown in completeRequest', req.params.id);
+    
+    if(req.isAuthenticated()) {
+        // Will add new request to DB
+        const newReferral = `UPDATE "new_request" SET "completed" = true WHERE "request_id" = $1`;
+        pool.query(newReferral, [req.params.id]).then((results) => {
+           res.sendStatus(200)
+        }).catch((error) => {
+            console.log('error adding to DB', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+    });
 
 module.exports = router;
