@@ -31,6 +31,54 @@ router.get('/getAll', (req, res) => {
 });
 
 /**
+ * GET route template
+ */
+router.get('/getToFill', (req, res) => {
+    console.log('getToFill in recom.router');
+    
+    //make sure user is logged in to view shelf
+    if(req.isAuthenticated()) {
+        // "item".* gets all from item table
+        // and the query only grabs username from person table
+        const getToFill = `SELECT *
+        FROM "new_request"
+        JOIN "person" ON "new_request"."owned_by" = "person"."id" 
+        WHERE "written_from" = $1;`;
+        pool.query(getToFill, [req.user.id]).then((results) => {
+            console.log('toFill Worked :', results.rows);
+            res.send(results.rows);
+        }).catch((error) => {
+            console.log('error in getToFill recom.route', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+});
+
+router.delete('/deleteRequest/:id', function(req, res) {
+    console.log('indeleteRequest', req.params.id);
+    
+    if(req.isAuthenticated()) {
+        // "item".* gets all from item table
+        // and the query only grabs username from person table
+        const getToFill = `DELETE FROM "new_request" 
+        WHERE request_id = $1;`;
+        pool.query(getToFill, [req.params.id]).then((results) => {
+            console.log('deleteRequest Worked');
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('error in deleteRequest', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+});
+
+/**
  * POST route template
  */
 router.post('/', (req, res) => {

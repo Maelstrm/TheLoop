@@ -6,7 +6,6 @@ import Footer from '../Footer/Footer';
 import FriendCard from '../FriendCard/FriendCard';
 
 import Axios from 'axios';
-import { USER_ACTIONS } from '../../redux/actions/userActions';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -51,48 +50,65 @@ class CreatePage extends Component {
     })
   }
 
-  // Sends axios request to put data into server
+  // Sends axios to verify email address
   attemptRequest = () => {
-    let requestToAttempt = {
-      date_sent: this.state.currentDate,
-      emailToTry: this.state.emailToTry,
-      request_body: this.state.request_body,
-      suggested_words: this.state.suggested_words
-    }
-
     Axios({
       method: 'post',
-      url: '/api/create/checkEmail/' + requestToAttempt.emailToTry
+      url: '/api/create/checkEmail/' + this.state.emailToTry
     }).then((response) => {
-      // If the email is found ,then the next function to send to DB will be sent.
       // If not, then alert will appear
+      // If the email is found ,then the next function to send to DB will be sent.
       // In the future, another function will run instead, for unregistered reciever
       switch (response.data) {
-        case 'foundData':
-          console.log('Will call next function');
-          break;
-
         case 'dataNotFound':
-          console.log('Data Not found');
-          alert('Sorry, this person is not in the database');
-
+          alert('User Not Found')
+          break;
         default:
-          console.log('Something Weird Happened!!');
-
+          this.addRequest(response.data.id);
           break;
       }
     }).catch((error) => {
       console.log('error in attemptRequest');
     })
-    // this.props.history.push('index');
+  }
+
+  // Sends axios to verify email address
+ addRequest = (userId) => {
+    let requestToAttempt = {
+      date_sent: this.state.currentDate,
+      owned_by: this.props.user.id,
+      written_from: userId,
+      request_body: this.state.request_body,
+      suggested_words: this.state.suggested_words
+    }
+
+    console.log('data to send', requestToAttempt);
+    
+    Axios({
+      method: 'post',
+      url: '/api/create/addRequest/',
+      data: requestToAttempt,
+    }).then((response) => {
+      this.props.history.replace('index');
+    }).catch((error) => {
+      console.log('error in attemptRequest');
+    })
   }
 
   // Sets the date of the request, based on the user's client
   getDate = () => {
-    let todayDate = String(new Date());
+    let todayDate = this.dateToYMD(new Date());
     this.setState({
       currentDate: todayDate
     })
+  }
+
+  // Either use this or moment.js to fomat the date
+  dateToYMD(date) {
+      var d = date.getDate();
+      var m = date.getMonth() + 1;
+      var y = date.getFullYear();
+      return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
   }
 
   // Stuff to run when page is initially rendered

@@ -30,7 +30,7 @@ class Header extends Component {
     return (
       <div className="instructions">
         <div>
-          <h1 className="lead">ADSFDS</h1>
+          <h1 className="lead">The Loop</h1>
         </div>
         {logoutButton}
       </div>
@@ -38,9 +38,5 @@ class Header extends Component {
 
   }
 }
-
-
-
-
 
 export default connect(mapStateToProps)(Header);

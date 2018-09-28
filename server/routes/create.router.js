@@ -14,12 +14,11 @@ router.get('/', (req, res) => {
  */
 router.post('/checkEmail/:email', (req, res) => {
     console.log('email to check', req.params.email);
-
     if(req.isAuthenticated()) {
         // This will chedk the database to see if there is an email that matches the one that was sent.
-        const myFriends = `SELECT email FROM person WHERE person.email LIKE $1
+        const myFriends = `SELECT email, id FROM person WHERE person.email LIKE $1
                             UNION ALL
-                            SELECT NULL
+                            SELECT NULL, NULL
                             FETCH FIRST 1 ROW ONLY;`;
         pool.query(myFriends, [req.params.email]).then((results) => {
             // If the email is a match, then the database will indicate this back to client
@@ -27,7 +26,8 @@ router.post('/checkEmail/:email', (req, res) => {
             switch (results.rows[0].email) {
                 case req.params.email:
                     console.log('there was a match');
-                    res.send('foundData');
+                    let toSend = results.rows[0].id;
+                    res.send({id: toSend});
                     break;
                 default:
                     console.log('not found');
@@ -48,26 +48,22 @@ router.post('/checkEmail/:email', (req, res) => {
  * POST route template
  */
 router.post('/addRequest', (req, res) => {
-    console.log(req.body);
+    console.log('in addRequest', req.body);
 
-    let isOk = emailValidation(req.body.emailToTry);
-
-    if(isOk === 200) {
-        console.log('this is good!');
-
-    } else {
-        console.log('this is bad!');
+    if(req.isAuthenticated()) {
+        // Will add new request to DB
+        const newReferral = `INSERT INTO "new_request" ("date_sent", "owned_by", "written_from", "request_body", "suggested_words")
+        VALUES ($1, $2, $3, $4, $5);`;
+        pool.query(newReferral, [req.body.date_sent, req.body.owned_by, req.body.written_from, req.body.request_body, req.body.suggested_words]).then((results) => {
+           res.sendStatus(200)
+        }).catch((error) => {
+            console.log('error adding to DB', error);
+            res.sendStatus(500);
+        });
     }
-
-    let newRequest = {
-        date_sent: req.body.date_sent,
-        owned_by: req.user.id,
-        written_from: req.body.emailToTry,
-        request_body: req.body.request_body,
-        suggested_words: req.body.suggested_words,
+    else {
+        res.sendStatus(403);
     }
-
-    console.log('Request Added', newRequest);
 });
 
 module.exports = router;
