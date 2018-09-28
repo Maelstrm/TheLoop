@@ -33,7 +33,7 @@ class RequestCardExp extends Component {
         <br />
         <button onClick={this.deleteMe}>Delete</button>
         <button onClick={this.fillMe}>Fill Request</button>
-        <button onClick={this.norm}>Normal Mode</button>
+        <button onClick={this.normalMode}>Normal Mode</button>
       </div>
     )
 

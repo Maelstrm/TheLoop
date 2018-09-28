@@ -98,6 +98,7 @@ class CreatePage extends Component {
   // Sets the date of the request, based on the user's client
   getDate = () => {
     let todayDate = this.dateToYMD(new Date());
+    
     this.setState({
       currentDate: todayDate
     })

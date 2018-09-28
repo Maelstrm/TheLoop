@@ -61,8 +61,7 @@ router.delete('/deleteRequest/:id', function(req, res) {
     console.log('indeleteRequest', req.params.id);
     
     if(req.isAuthenticated()) {
-        // "item".* gets all from item table
-        // and the query only grabs username from person table
+        // finds all requests that are for the user to fill
         const getToFill = `DELETE FROM "new_request" 
         WHERE request_id = $1;`;
         pool.query(getToFill, [req.params.id]).then((results) => {
@@ -79,9 +78,25 @@ router.delete('/deleteRequest/:id', function(req, res) {
 });
 
 /**
- * POST route template
+ * Will add a completed referral to the db
  */
-router.post('/', (req, res) => {
+router.post('/addNew', (req, res) => {
+console.log('touchdown in addNew', req.body);
+
+if(req.isAuthenticated()) {
+    // Will add new request to DB
+    const newReferral = `INSERT INTO "fill_referral" ("new_request_id","referral_body", "date_created", "aws_links", "can_contact")
+    VALUES ($1, $2, $3, $4, $5);`;
+    pool.query(newReferral, [req.body.new_request_id, req.body.referral_body, req.body.date_created, req.body.aws_links, req.body.can_contact]).then((results) => {
+       res.sendStatus(200)
+    }).catch((error) => {
+        console.log('error adding to DB', error);
+        res.sendStatus(500);
+    });
+}
+else {
+    res.sendStatus(403);
+}
 
 });
 
