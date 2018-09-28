@@ -62,7 +62,7 @@ class RequestCard extends Component {
             case 'exp':
                 return (<div><RequestCardExp data={this.props.data} delete={this.deleteMe} fill={this.modeFill} norm={this.modeNorm} /></div>)
             case 'fillMe':
-                return (<div><RequestCardFill reset={this.modeNorm} /></div>)
+                return (<div><RequestCardFill data={this.props.data} delete={this.deleteMe} fill={this.modeFill} norm={this.modeNorm} /></div>)
             case 'dest':
                 return (<div></div>)
             default:
