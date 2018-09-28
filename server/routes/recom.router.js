@@ -33,6 +33,34 @@ router.get('/getAll', (req, res) => {
 /**
  * GET route template
  */
+router.get('/getFav', (req, res) => {
+    console.log('getFavRouter');
+    
+    //make sure user is logged in to view shelf
+    if(req.isAuthenticated()) {
+        // "item".* gets all from item table
+        // and the query only grabs username from person table
+        const getFav = `SELECT written_from, person.username, person.email, person.phone_number, fill_referral.date_created, fill_referral.referral_body, fill_referral.aws_links, fill_referral.can_contact, fill_referral.favorite,  person.employer, person.position
+        FROM "new_request"
+        LEFT JOIN "fill_referral" ON "new_request"."request_id" = "fill_referral"."new_request_id"
+        JOIN "person" ON "new_request"."written_from" = "person"."id"
+        WHERE "owned_by" = $1 and "completed" IS TRUE and "favorite" IS TRUE`;
+        pool.query(getFav, [req.user.id]).then((results) => {
+            console.log(results.rows);
+            res.send(results.rows);
+        }).catch((error) => {
+            console.log('error in getFav recom.route', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+});
+
+/**
+ * GET all requests to be filed
+ */
 router.get('/getToFill', (req, res) => {
     console.log('getToFill in recom.router');
     
@@ -50,6 +78,34 @@ router.get('/getToFill', (req, res) => {
             res.send(results.rows);
         }).catch((error) => {
             console.log('error in getToFill recom.route', error);
+            res.sendStatus(500);
+        });
+    }
+    else {
+        res.sendStatus(403);
+    }
+});
+
+/**
+ * GET all requests to be filed
+ */
+router.get('/getPending', (req, res) => {
+    console.log('getPending in recom.router');
+    
+    //make sure user is logged in to view shelf
+    if(req.isAuthenticated()) {
+        // "item".* gets all from item table
+        // and the query only grabs username from person table
+        const getPending = `SELECT *
+        FROM "new_request"
+        JOIN "person" ON "new_request"."owned_by" = "person"."id" 
+        WHERE "owned_by" = $1
+        AND "completed" = FALSE;`;
+        pool.query(getPending, [req.user.id]).then((results) => {
+            console.log('getPending Worked:', results.rows);
+            res.send(results.rows);
+        }).catch((error) => {
+            console.log('error in getPending recom.route', error);
             res.sendStatus(500);
         });
     }

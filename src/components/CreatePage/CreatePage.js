@@ -192,7 +192,7 @@ class CreatePage extends Component {
             {this.state.currentDate}
             {this.state.suggested_words}
             {this.state.request_body}
-            <button onClick={this.displayViewChange}>Back</button>
+            <button onClick={this.displayViewChange}>Cancel</button>
             <button onClick={this.attemptRequest}>Send</button>
             <Footer />
           </div>

@@ -5,9 +5,6 @@ import React, { Component } from 'react';
 
 
 class RequestCardExp extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   deleteMe = () => {
     this.props.delete();

@@ -89,11 +89,16 @@ class RecomItem extends Component {
                 return (
                     <div>
                         {this.state.aws_links}
+                        <iframe key={this.props.data.id} width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
                     </div>
                 )
             default:
                 console.log('DisplayContents not working');
         }
+    }
+
+    toggleFavorite = () => {
+        console.log('FavoritesChange!');
     }
 
 
@@ -103,6 +108,7 @@ class RecomItem extends Component {
                 <button onClick={this.barHandler}>Bar Mode</button>
                 <button onClick={this.expandedHandler}>Expanded Mode</button>
                 <button onClick={this.videoHandler}>Video Mode</button>
+                <button onClick={this.toggleFavorite}>Favorite</button>
                 <this.DisplayContents />
             </div>
         );

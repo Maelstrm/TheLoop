@@ -8,7 +8,6 @@ import RecomItem from '../RecomItem/RecomItem';
 // get all recommendations from the database
 import Axios from 'axios';
 
-
 const mapStateToProps = state => ({
   // Stores the current user state
   user: state.user,
