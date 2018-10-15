@@ -106,8 +106,8 @@ Steps to get the development environment running.
 
 ## Screen Shot
 
-![Screenshot](./screenshot.png)
-![Screenshot](./screenshot_02.png)
+![Screenshot](./index_screen.png)
+![Screenshot](./req_screen.png)
 
 ### Completed Features
 
