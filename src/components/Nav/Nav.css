@@ -1,0 +1,20 @@
+button {
+    padding: 1px;
+
+}
+
+li {
+    font-size: 1.5em;
+    padding-left: .25em;
+    padding-right: .25em;
+}
+
+.navBar {
+    background-color:#707070;
+    padding: 0px;
+    height: 75px;
+}
+.navButton {
+    font-size: 1.5em;
+    padding: 0px;
+}

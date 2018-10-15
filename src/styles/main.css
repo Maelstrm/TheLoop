@@ -2,6 +2,9 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
+.centerContent {
+    margin-bottom: 5em;
+}
 .instructions h1 {
     font-size: 24px;
     font-weight: 700;
@@ -47,8 +50,12 @@ input[type="submit"] {
     background-color: #f8f8f8;
 }
 
+.mainContainer {
+    height: 100%;
+}
+
 .navbar {
-  background-color: #b9a05c;
+  background-color: #546e7a;
   width: 100%;
   border-radius: 0px;
 }
@@ -77,4 +84,11 @@ li a {
 li a:hover {
     text-decoration: underline;
     color: #eee;
+}
+
+.badBgColor {
+    background-color: #d81b60D;
+}
+.goodBgColor {
+    background-color: #6ab7ff
 }

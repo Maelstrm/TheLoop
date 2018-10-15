@@ -54,7 +54,7 @@ class LoginPage extends Component {
           className="alert"
           role="alert"
         >
-          { this.props.login.message }
+          {this.props.login.message}
         </h2>
       );
     }
@@ -63,14 +63,14 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div>
-        { this.renderAlert() }
-        <form onSubmit={this.login}>
+      <div className="container bg-dark text-light mainContainer p-3">
+        {this.renderAlert()}
+        <form className="container-fluid bg-dark form-container p-3" onSubmit={this.login}>
           <h1>Login</h1>
           <div>
             <label htmlFor="username">
               Username:
-              <input
+              <input className="form-control"
                 type="text"
                 name="username"
                 value={this.state.username}
@@ -81,7 +81,7 @@ class LoginPage extends Component {
           <div>
             <label htmlFor="password">
               Password:
-              <input
+              <input className="form-control"
                 type="password"
                 name="password"
                 value={this.state.password}
@@ -90,12 +90,12 @@ class LoginPage extends Component {
             </label>
           </div>
           <div>
-            <input
+            <input className="btn button-info"
               type="submit"
               name="submit"
               value="Log In"
             />
-            <Link to="/register">Register</Link>
+            <Link to="/register"><button className="btn btn-primary">Register</button></Link>
           </div>
         </form>
       </div>

@@ -58,11 +58,31 @@ class RequestCard extends Component {
     displayRender = () => {
         switch (this.state.displayMode) {
             case 'norm':
-                return (<div onClick={this.modeExp}><RequestCardNorm data={this.props.data} /></div>)
+                return (<div><RequestCardNorm data={this.props.data} />
+                    <div onClick={this.modeExp} className="modeLink text-center m-0">
+                        <i className="fas fa-ellipsis-h fas-custom m-0"></i>
+                    </div>
+                </div>)
             case 'exp':
-                return (<div><RequestCardExp data={this.props.data} delete={this.deleteMe} fill={this.modeFill} norm={this.modeNorm} /></div>)
+                return (<div><RequestCardExp data={this.props.data} delete={this.deleteMe} fill={this.modeFill} norm={this.modeNorm} />
+                    <div className="row ml-1 mr-1">
+                        <div onClick={this.modeNorm} className="modeLink text-center col-4 bg-warning">
+                            Cancel
+                    </div>
+                        <div onClick={this.modeExp} className="modeLink text-center col-4 m-0 bg-danger">
+                            Delete
+                    </div>
+                        <div onClick={this.modeFill} className="modeLink text-center col-4 bg-primary">
+                            Fill Request
+                    </div>
+                    </div>
+                </div>)
             case 'fillMe':
-                return (<div><RequestCardFill data={this.props.data} delete={this.deleteMe} fill={this.modeFill} norm={this.modeNorm} dest={this.modeToDest} /></div>)
+                return (<div><RequestCardFill data={this.props.data} delete={this.deleteMe} exp={this.modeExp} norm={this.modeNorm} dest={this.modeToDest} />
+                </div>
+
+
+                )
             case 'dest':
                 return (<div></div>)
             default:

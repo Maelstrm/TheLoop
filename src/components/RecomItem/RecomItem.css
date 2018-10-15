@@ -1,0 +1,92 @@
+video {
+    width: 100%;
+}
+p {
+    margin-bottom: 3px;
+}
+
+.dateDisplay {
+    font-size: .88em;
+    width: 100%;
+    margin: 0px;
+    padding: 2px;
+    padding-left: 5px;
+    margin-bottom: 5px;
+    background-color: #cfcfcf;
+}
+
+.modeLink {
+    background-color: #29434ed2;
+    width: 100%;
+}
+
+.fa-user-circle {
+    font-size: 2em;
+    font-color: #29434e;
+}
+.fa-gratipay {
+    font-size: 2em;
+}
+.fa-check-circle {
+    font-size: 1.5em;
+    font-color: #29434e;
+}
+.fa-exclamation-circle {
+    font-size: 1.5em;
+    font-color: #29434e;
+}
+
+.fas-custom {
+    font-size: 1.5em;
+    color: #819ca9;
+}
+.fa-youtube {
+    font-size: 5em;
+    color: red;
+}
+
+.canContact {
+    background-color: #fff1769c;
+}
+.cannotContact {
+    background-color: #bdbdbd;
+}
+.contactInfo {
+    font-size: 1em;
+    font-weight: bold;
+}
+.contactNotice {
+    font-size: .88em;
+}
+.card-body {
+    padding: .5rem;
+}
+
+.card-content {
+    font-size: .88em;
+}
+
+.card-date {
+    padding-bottom: 1px;
+    font-size: .88em;
+}
+
+.recomItem {
+    background-color: #eeeeee;
+}
+
+.referralBody {
+    font-style: italic;
+    font-size: .85em;
+}
+
+.title {
+    display: inline;
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
+.iLike {
+    color: #d81b60;
+}

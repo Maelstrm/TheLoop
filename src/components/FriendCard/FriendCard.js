@@ -10,9 +10,13 @@ class RecomItem extends Component {
 
     render() {
         return (
-            <div>
-                {this.props.data.first_name} {this.props.data.last_name} <br />
-                {this.props.data.email}
+            <div className="p-2">
+                <div className="title">
+                    {this.props.data.first_name} {this.props.data.last_name}
+                </div>
+                <div>
+                    {this.props.data.email}
+                </div>
             </div>
         );
     }

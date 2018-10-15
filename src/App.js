@@ -20,6 +20,7 @@ import FillRequestsPage from './components/FillRequestsPage/FillRequestsPage'
 
 
 import './styles/main.css';
+import './styles/cloudinary.css'
 
 const App = () => (
   <div>

@@ -6,6 +6,7 @@ import Footer from '../Footer/Footer';
 import FriendCard from '../FriendCard/FriendCard';
 
 import Axios from 'axios';
+import './CreatePage.css'
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -73,7 +74,7 @@ class CreatePage extends Component {
   }
 
   // Sends axios to verify email address
- addRequest = (userId) => {
+  addRequest = (userId) => {
     let requestToAttempt = {
       date_sent: this.state.currentDate,
       owned_by: this.props.user.id,
@@ -83,7 +84,7 @@ class CreatePage extends Component {
     }
 
     console.log('data to send', requestToAttempt);
-    
+
     Axios({
       method: 'post',
       url: '/api/create/addRequest/',
@@ -98,7 +99,7 @@ class CreatePage extends Component {
   // Sets the date of the request, based on the user's client
   getDate = () => {
     let todayDate = this.dateToYMD(new Date());
-    
+
     this.setState({
       currentDate: todayDate
     })
@@ -106,10 +107,10 @@ class CreatePage extends Component {
 
   // Either use this or moment.js to fomat the date
   dateToYMD(date) {
-      var d = date.getDate();
-      var m = date.getMonth() + 1;
-      var y = date.getFullYear();
-      return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+    var d = date.getDate();
+    var m = date.getMonth() + 1;
+    var y = date.getFullYear();
+    return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
   }
 
   // Stuff to run when page is initially rendered
@@ -164,37 +165,61 @@ class CreatePage extends Component {
     switch (this.state.currentView) {
       case 'select':
         return (
-          <div>
-            <Nav />
-            <label>Email Address</label>
-            <input type="text" name="userToSend" placeholder="username@address.com" onChange={this.handleemailToTryState} value={this.state.emailToTry}></input>
-            <button onClick={this.displayViewChange}>Next</button>
+          <div className="container mt-3 column">
+            <div className="col">
+              <h5 className="card-title title">Create New Request</h5>
+              <p>
+                Enter an email or select a friend.
+              </p>
+              <hr />
+            </div>
+            <div className="form-row mb-3">
 
-            {/* Render a card for every friend */}
-            {this.state.myFriends.map((item, i) => {
-              this.setMe = () => {
-                this.setState({
-                  emailToTry: item.email
-                })
-              }
-              return (<div key={i} onClick={this.setMe}><FriendCard key={i} data={item} /></div>)
-            })}
-            <Footer />
+              <div className="form-group col- my-1">
+                <input className="form-control" type="email" name="userToSend" placeholder="username@address.com" onChange={this.handleemailToTryState} value={this.state.emailToTry}></input>
+              </div>
+              <div className="form-group col-auto my-1">
+                <button className="btn nextbtn" onClick={this.displayViewChange}>Next</button>
+              </div>
+            </div>
+
+
+            <div className=" shadow">
+              {/* Render a card for every friend */}
+              {this.state.myFriends.map((item, i) => {
+                this.setMe = () => {
+                  this.setState({
+                    emailToTry: item.email
+                  })
+                }
+                return (<div className="friend-fill shadow" key={i} onClick={this.setMe}><FriendCard key={i} data={item} /></div>)
+              })}
+            </div>
+
+
           </div>
         )
       case 'compose':
         return (
-          <div>
-            <Nav />
-            {this.state.emailToTry}
-            <input type="text" name="request_body" placeholder="Referral Body" onChange={this.handleReferralBodyState} value={this.state.request_body}></input>
-            <input type="text" name="suggested_words" placeholder="Suggested Words" onChange={this.handleSuggestedWordsState} value={this.state.suggested_words}></input>
-            {this.state.currentDate}
-            {this.state.suggested_words}
-            {this.state.request_body}
-            <button onClick={this.displayViewChange}>Cancel</button>
-            <button onClick={this.attemptRequest}>Send</button>
-            <Footer />
+          <div className="container mb-5 mt-3 column">
+            <div className="col">
+              <h5 className="card-title title">Compose your request</h5>
+              <hr />
+              <p>
+                Write a short letter explaining why you would like a letter of recommendation.
+              </p>
+              <div>
+                <textarea className="referralBody border border-success" type="text" name="request_body" placeholder="I would love to have your support during my job hunting process." onChange={this.handleReferralBodyState} value={this.state.request_body} rows="4"></textarea>
+              </div>
+              <br />
+              <p>Suggest suggest some key words.</p>
+              <input className="referralBody border border-success" type="text" name="suggested_words" placeholder="focused, smart, relaxed" onChange={this.handleSuggestedWordsState} value={this.state.suggested_words} ></input>
+              <hr />
+            </div>
+            <div className="col text-center">
+              <button className="btn btn-danger mr-5" onClick={this.displayViewChange}>Cancel</button>
+              <button className="btn btn-primary ml-5" onClick={this.attemptRequest}>Send</button>
+            </div>
           </div>
         )
       default:
@@ -205,7 +230,16 @@ class CreatePage extends Component {
   render() {
     return (
       <div>
-        {this.whichToDisplay()}
+        <div className="sticky-top">
+          <Nav />
+        </div>
+        <div className="centerContent mb-3 mt-3">
+
+          {this.whichToDisplay()}
+        </div>
+        <div className="fixed-bottom">
+          <Footer />
+        </div>
       </div>
     );
   }

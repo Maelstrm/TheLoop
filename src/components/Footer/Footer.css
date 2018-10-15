@@ -1,0 +1,30 @@
+
+li {
+    font-size: 1.5em;
+    padding: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #34515e;
+}
+.navBar {
+    background-color:#707070;
+    padding: 0px;
+}
+.navButton {
+    font-size: 1.5em;
+}
+
+.fa-plus-circle {
+    color: #7cb342b9;
+}
+
+.fa-hourglass {
+    color: #ffb300b9;
+}
+
+.fa-heart {
+    color: #d81b60b9;
+}
+.fa-pen {
+    color: #6ab7ffb9;
+}

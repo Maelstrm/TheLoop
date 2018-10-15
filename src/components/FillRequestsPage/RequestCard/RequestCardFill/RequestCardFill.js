@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-
-
-
-
+import {globals} from '../../../../globals';
 
 class RequestCardFill extends Component {
 
@@ -13,6 +10,7 @@ class RequestCardFill extends Component {
       referral_body: '',
       aws_links: '',
       can_contact: true,
+      video: '',
     }
   }
 
@@ -26,6 +24,30 @@ class RequestCardFill extends Component {
   normalMode = () => {
     this.props.norm();
   }
+
+  componentDidMount() {
+    this.config = {
+      cloud_name: globals.CLOUDINARY_NAME,
+      api_key: globals.CLOUDINARY_KEY,
+      api_secret: globals.CLOUDINARY_SECRET,
+      upload_preset: globals.CLOUDINARY_PRESET
+   }
+  }
+
+  openCloudinary = (event) => {
+    event.preventDefault();
+    window.cloudinary.openUploadWidget(this.config, (error, result) => {
+      if (result) {
+        let cloudinaryUrl = result[0].url
+        this.setState({
+          // store url to local state BEFORE dispatching an action
+          ...this.state,
+          aws_links: cloudinaryUrl
+        })
+        console.log(this.state.video);
+      }
+    })
+}
 
   addNew = () => {
     console.log('in addNew', this.props.data);
@@ -85,9 +107,9 @@ class RequestCardFill extends Component {
   contactButtonDisplay = () => {
     switch (this.state.can_contact) {
       case true:
-        return (<div><button onClick={this.changeContact}>Yes</button></div>)
+        return (<div><button className="bg-primary text-light" onClick={this.changeContact}>Yes</button></div>)
       case false:
-        return (<div><button onClick={this.changeContact}>No</button></div>)
+        return (<div><button className="bg-secondary text-light" onClick={this.changeContact}>No</button></div>)
       default:
         break;
     }
@@ -96,21 +118,29 @@ class RequestCardFill extends Component {
   render() {
 
     return (
-      <div>
-        {this.props.data.first_name} {this.props.data.last_name}
-        <br />
+      <div className="container mb-5 mt-3 column friend-fill">
+        <div className="title">
+                    {this.props.data.first_name} {this.props.data.last_name}
+                </div><br />
         {this.props.data.email}
         <br />
         {this.props.data.suggested_words}
         <br />
-        <input placeholder="referral_body will go in here"></input>
-        {JSON.stringify(this.state.can_contact)}
-        {this.contactButtonDisplay()}
-        <br />
-        <button onClick={this.addNew}>Send</button>
-        <br />
-        <button onClick={this.deleteMe}>Decline</button>
-        <button onClick={this.normalMode}>Normal Mode</button>
+        <textarea className="referralBody border border-success" placeholder="referral_body will go in here" rows="3"></textarea>
+        <div>
+        <span className="contactText">Would you like to be contacted:</span> {this.contactButtonDisplay()}
+
+        </div>
+        <button onClick={this.openCloudinary}>Upload Video</button>
+
+        <div className="row ml-1 mr-1">
+                        <div onClick={this.props.exp} className="modeLink text-center col-6 m-0 bg-warning">
+                            Cancel
+                    </div>
+                        <div onClick={this.addNew} className="modeLink text-center col-6 bg-success">
+                            Send
+                    </div>
+                    </div>
       </div>
     )
 

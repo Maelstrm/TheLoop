@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 import RequestCard from './RequestCard/RequestCard';
+import './FillRequestPage.css'
 
 import Axios from 'axios';
 
@@ -59,11 +60,21 @@ class FillRequestsPage extends Component {
 
     return (
       <div>
-        <Nav />
+        <div className="sticky-top">
+          <Nav />
+        </div>
+        <div className="mt-3">
+        <h5 className="card-title pl-3">Requests to fill</h5><hr />
         {this.state.requestsToFill.map((item, i) => {
-          return <RequestCard key={i} data={item} funct={this.refresh} refresh={this.getToFill}/>
+          return (<div className="container shadow mb-2">
+            <RequestCard key={i} data={item} funct={this.refresh} refresh={this.getToFill}/>
+          </div>)
         })}
+        </div>
+        
+        <div className="fixed-bottom">
         <Footer />
+      </div>
       </div>
     );
   }

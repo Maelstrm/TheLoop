@@ -1,0 +1,26 @@
+.formLabel {
+    display: inline;
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+}
+
+.friend-fill {
+    margin-bottom: .5em;
+    background-color: #c97b63ab;
+}
+.title {
+    display: inline;
+    font-size: 1.3em;
+    margin: 0;
+    padding: 0;
+}
+
+.nextbtn {
+    background-color: #6ab7ff;
+}
+
+.referralBody {
+    font-style: italic;
+    font-size: .85em;
+}

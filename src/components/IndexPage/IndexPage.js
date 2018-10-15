@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Nav from '../../components/Nav/Nav';
 import Footer from '../../components/Footer/Footer';
-import {USER_ACTIONS} from '../../redux/actions/userActions';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
 import RecomItem from '../RecomItem/RecomItem';
 
 // get all recommendations from the database
@@ -59,11 +59,17 @@ class IndexPage extends Component {
   render() {
     return (
       <div >
-        <Nav />
-        {this.state.allRecom.map((item, i) => {
-          return (<RecomItem key={i} data={item} />)
-        })}
+        <div className="sticky-top">
+          <Nav />
+        </div>
+        <div className="centerContent">
+          {this.state.allRecom.map((item, i) => {
+            return (<RecomItem key={i} data={item} />)
+          })}
+        </div>
+        <div className="fixed-bottom">
         <Footer />
+      </div>
       </div>
     );
   }

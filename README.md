@@ -1,82 +1,132 @@
-# Express/Passport with React
-This version uses React to control the login requests and redirection in coordination with client-side routing.
+# The Loop
 
-We **STONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+A mobile-first React application that allows users to request, give, and manage professional letters of recommendation.
 
-## Prerequisites
+## Built With
 
-Before you get started, make sure you have the following software installed on your computer:
+- React
+- Redux / Sagas
+- Node.js
+- Express
+- Moment.js
+- nodemon
+- Passport
+- PostgreSQL
+- Boostrap
+- Material UI
+- Coudinary
 
-- [Node.js](https://nodejs.org/en/)
-- [PostrgeSQL](https://www.postgresql.org/)
-- [Nodemon](https://nodemon.io/)
+## Setup Database
+Download and install PostgreSQL. The database for this project should be named "the_loop"
 
-## Create database and table
-
-Create a new database called `prime_app` and create a `person` table:
-
-```SQL
+```sql
+-- Setup
 CREATE TABLE person (
-    id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR (80) UNIQUE NOT NULL,
-    password VARCHAR (1000) NOT NULL
+    password VARCHAR (1000) NOT NULL,
+    "admin" BOOLEAN NOT NULL DEFAULT 'FALSE',
+    "email" varchar(150) NOT NULL,
+    "first_name" varchar(25) NOT NULL,
+    "last_name" varchar(25) NOT NULL,
+    "employer" varchar(50) NOT NULL,
+    "position" varchar(50) NOT NULL,
+    "phone_number" varchar(10) NOT NULL,
+    "joined_date" DATE NOT NULL,
+    "total_req_left" integer NOT NULL DEFAULT '5'
 );
+
+CREATE TABLE "new_request" (
+    "request_id" serial UNIQUE NOT NULL,
+    "date_sent" DATE NOT NULL,
+    "owned_by" integer NOT NULL REFERENCES "person",
+	"written_from" integer DEFAULT NULL REFERENCES "person",
+    "request_body" varchar(420) NOT NULL,
+    "suggested_words" varchar(200) NOT NULL,
+	"completed" BOOLEAN DEFAULT FALSE,
+    CONSTRAINT new_Request_pk PRIMARY KEY ("request_id")
+);
+
+CREATE TABLE "industries" (
+    "industry_id" serial NOT NULL,
+    "industry_name" varchar(100) NOT NULL,
+    CONSTRAINT industries_pk PRIMARY KEY ("industry_id")
+);
+
+CREATE TABLE "friendship" (
+    "friendA_id" integer NOT NULL,
+    "friendB_id" integer NOT NULL,
+    "friend_status" BOOLEAN NOT NULL DEFAULT 'false'
+);
+
+CREATE TABLE "Invitation" (
+    "invitation_from" varchar(50) NOT NULL,
+    "access_key" varchar(200) NOT NULL UNIQUE,
+    "date_created" DATE NOT NULL,
+    "activated" BOOLEAN NOT NULL DEFAULT 'FALSE'
+);
+
+CREATE TABLE "LinkedIn" (
+    "user_id" varchar(200) NOT NULL,
+    "linkedin_data" varchar(200) NOT NULL
+);
+
+CREATE TABLE "amazon_storage" (
+    "referral_id" integer NOT NULL,
+    "audio" varchar(50) NOT NULL,
+    "video" varchar(50) NOT NULL,
+    CONSTRAINT amazon_storage_pk PRIMARY KEY ("referral_id")
+);
+
+CREATE TABLE "fill_referral" (
+	"new_request_id" integer NOT NULL REFERENCES "new_request",
+    "referral_body" varchar(420) NOT NULL,
+    "date_created" DATE NOT NULL,
+    "aws_links" varchar,
+    "can_contact" BOOLEAN NOT NULL DEFAULT 'TRUE',
+	"favorite" BOOLEAN NOT NULL DEFAULT 'FALSE'
+);
+--End Setup
 ```
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`
+### Installing
 
-## Download (Don't Clone) This Repository
+Steps to get the development environment running.
 
-* Don't Fork or Clone. Instead, click the `Clone or Download` button and select `Download Zip`.
-* Unzip the project and start with the code in that folder.
-* Create a new GitHub project and push this code to the new repository.
+1. Download this project.
+2. `npm install`
+3. `npm start`
+4. initialize database
+5. create an account.
+6. open developer tools and select mobile device.
 
-## Development Setup Instructions
+** Adding friendship has not been implemented. This must be done manually in the database using the "friendship" table.
 
-* Run `npm install`
-* Create a `.env` file at the root of the project and paste this line into the file:
-    ```
-    SERVER_SESSION_SECRET=superDuperSecret
-    ```
-    While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm run server`
-* Run `npm run client`
-* Navigate to `localhost:3000`
+## Screen Shot
 
-## Debugging
+![Screenshot](./screenshot.png)
 
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run dev:client`. Start the debugging server by selecting the Debug button.
+### Completed Features
 
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
+- [x] User Login / Logout
+- [x] User view recent recommendations
+- [x] Create New Request
+- [x] Fulfill request
+- [x] View Favorites
+- [x] Upload video
 
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
+### Next Steps
 
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
+- [ ] Add profile view
+- [ ] Finish "pending request" view
+- [ ] Add friend feature
+- [ ] Add Options page
+
+## Authors
+
+* Jakeh Clark
 
 
-## Production Build
+## Acknowledgments
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
-
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm start`
-* Navigate to `localhost:5000`
-
-## Lay of the Land
-
-* `src/` contains the React application
-* `public/` contains static assets for the client-side
-* `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
-* `server/` contains the Express App
-
-## Deployment
-
-1. Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Herkoku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
-# TheLoop
+* Hat tip to anyone who's code was used
