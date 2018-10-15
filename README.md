@@ -2,7 +2,7 @@
 
 A mobile-first React application that allows users to request, give, and manage professional letters of recommendation.
 
-The Loop is an on-going development project.
+The Loop is an on-going project.
 
 ## Built With
 
