@@ -117,13 +117,16 @@ Steps to get the development environment running.
 - [x] Fulfill request
 - [x] View Favorites
 - [x] Upload video
+- [x] View pending requests
+- [x] View user profile
 
 ### Next Steps
 
-- [ ] Add profile view
-- [ ] Finish "pending request" view
-- [ ] Add friend feature
+- [ ] Polish profile
+- [ ] Polis pending request view
+- [ ] Add a friend feature
 - [ ] Add Options page
+- [ ] Refactor application in React Native
 
 ## Authors
 
