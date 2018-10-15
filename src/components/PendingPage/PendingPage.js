@@ -35,7 +35,6 @@ class PendingPage extends Component {
 
     this.getPending();
     console.log(this.state.allPending);
-
   }
 
   componentDidUpdate() {
@@ -61,7 +60,6 @@ class PendingPage extends Component {
   }
 
   render() {
-
     return (
       <div>
         <div className="sticky-top">
@@ -74,7 +72,6 @@ class PendingPage extends Component {
               <div className="card-header p-1 pl-2 pr-2">
               <p className="m-0"><b>Sent to:</b> {item.first_name + " " + item.last_name}</p>
               <p className="m-0"><b>Date Sent:</b> {moment(item.date_sent).format('MMMM Do YYYY')}</p>
-              
               </div>
               <div className="card-body p-1 pl-2 pr-2">
                 <blockquote className="blockquote mb-0">
@@ -82,7 +79,6 @@ class PendingPage extends Component {
                 </blockquote>
               </div>
             </div>
-
           </div>)
         })}
         <div className="fixed-bottom">
