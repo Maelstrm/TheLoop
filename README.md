@@ -2,6 +2,8 @@
 
 A mobile-first React application that allows users to request, give, and manage professional letters of recommendation.
 
+The Loop is an on-going development project.
+
 ## Built With
 
 - React
@@ -105,6 +107,7 @@ Steps to get the development environment running.
 ## Screen Shot
 
 ![Screenshot](./screenshot.png)
+![Screenshot](./screenshot_02.png)
 
 ### Completed Features
 
@@ -126,7 +129,3 @@ Steps to get the development environment running.
 
 * Jakeh Clark
 
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used

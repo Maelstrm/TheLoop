@@ -22,28 +22,51 @@ class UserPage extends Component {
     }
   }
 
+  formatPhoneNumber = (phoneNumberString) => {
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+    var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
+    if (match) {
+      var intlCode = (match[1] ? '+1 ' : '')
+      return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('')
+    }
+    return null
+  }
+
   render() {
     let content = null;
 
     if (this.props.user.userName) {
       content = (
-        <div>
-          <h1
-            id="welcome"
-          >
-            Welcome, {this.props.user.userName}!
-          </h1>
-          <p>Your ID is: {this.props.user.id}</p>
-          {JSON.stringify(this.props.user.fullUser)}
+        <div className="card">
+        {/* Avatar */}
+          <img className="card-img-top" src="https://via.placeholder.com/350x150?text=User+Avatar" alt="avatar" />
+          <div className="card-body">
+          {/* full name */}
+            <h5 className="card-title">{this.props.user.fullUser.first_name + " " + this.props.user.fullUser.last_name}</h5>
+
+            {/* Email */}
+            <p className="card-text"><b>{this.props.user.fullUser.position}</b> at {this.props.user.fullUser.employer}</p>
+
+            {/*  */}
+          </div>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">{this.props.user.fullUser.email}</li>
+            <li className="list-group-item">{this.formatPhoneNumber(this.props.user.fullUser.phone_number)}</li>
+          </ul>
         </div>
       );
     }
 
     return (
       <div>
-        <Nav />
-        { content }
-        <Footer />
+        <div className="sticky-top">
+          <Nav />
+        </div>
+        {/* {JSON.stringify(this.props.user.fullUser)} */}
+        {content}
+        <div className="fixed-bottom">
+          <Footer />
+        </div>
       </div>
     );
   }

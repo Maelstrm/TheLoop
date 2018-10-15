@@ -66,7 +66,7 @@ class FillRequestsPage extends Component {
         <div className="mt-3">
         <h5 className="card-title pl-3">Requests to fill</h5><hr />
         {this.state.requestsToFill.map((item, i) => {
-          return (<div className="container shadow mb-2">
+          return (<div key={i} className="container shadow mb-2">
             <RequestCard key={i} data={item} funct={this.refresh} refresh={this.getToFill}/>
           </div>)
         })}

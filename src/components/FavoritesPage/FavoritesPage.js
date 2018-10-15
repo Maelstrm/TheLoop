@@ -61,11 +61,15 @@ class FavoritesPage extends Component {
 
     return (
       <div>
-        <Nav />
+        <div className="sticky-top">
+          <Nav />
+        </div>
         {this.state.favRecom.map((item, i) => {
           return (<RecomItem key={i} data={item} />)
         })}
-        <Footer />
+         <div className="fixed-bottom">
+          <Footer />
+        </div>
       </div>
     );
   }

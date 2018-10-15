@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-import {USER_ACTIONS} from '../../redux/actions/userActions';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
+import moment from 'moment';
+
+import './PendingPage.css'
 
 // get all pending recommendations from the database
 import Axios from 'axios';
@@ -23,8 +26,8 @@ class PendingPage extends Component {
     }
   }
 
-   // On Page Load, will run this code
-   componentDidMount() {
+  // On Page Load, will run this code
+  componentDidMount() {
     // Check to see if user is logged in
     this.props.dispatch({
       type: USER_ACTIONS.FETCH_USER
@@ -61,11 +64,30 @@ class PendingPage extends Component {
 
     return (
       <div>
-        <Nav />
+        <div className="sticky-top">
+          <Nav />
+        </div>
         {this.state.allPending.map((item, i) => {
-          return (<div key={i}>'Item Number' {i} <br /></div>)
+          return (<div key={i}>
+
+            <div className="card m-2 shadow pendingCard">
+              <div className="card-header p-1 pl-2 pr-2">
+              <p className="m-0"><b>Sent to:</b> {item.first_name + " " + item.last_name}</p>
+              <p className="m-0"><b>Date Sent:</b> {moment(item.date_sent).format('MMMM Do YYYY')}</p>
+              
+              </div>
+              <div className="card-body p-1 pl-2 pr-2">
+                <blockquote className="blockquote mb-0">
+                  <p><i>"{item.request_body}"</i></p>
+                </blockquote>
+              </div>
+            </div>
+
+          </div>)
         })}
-        <Footer />
+        <div className="fixed-bottom">
+          <Footer />
+        </div>
       </div>
     );
   }

@@ -27,7 +27,7 @@ class OptionsPage extends Component {
       content = (
         <div>
           <p>
-            Options Page
+            Options Page is under development
           </p>
         </div>
       );
@@ -35,9 +35,13 @@ class OptionsPage extends Component {
 
     return (
       <div>
-        <Nav />
+        <div className="sticky-top">
+          <Nav />
+        </div>
         { content }
-        <Footer />
+        <div className="fixed-bottom">
+          <Footer />
+        </div>
       </div>
     );
   }
