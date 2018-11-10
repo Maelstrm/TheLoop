@@ -123,7 +123,7 @@ Steps to get the development environment running.
 ### Next Steps
 
 - [ ] Polish profile
-- [ ] Polis pending request view
+- [ ] Polish pending request view
 - [ ] Add a friend feature
 - [ ] Add Options page
 - [ ] Refactor application in React Native
